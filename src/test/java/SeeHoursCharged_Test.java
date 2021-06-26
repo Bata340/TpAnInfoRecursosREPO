@@ -16,21 +16,5 @@ import org.junit.runner.RunWith;
         }
 )
 
-public class Test1 {
-
-    @Given("^$")
-    public void a{
-
-    }
-
-    @When("^$")
-    public void b{
-
-    }
-
-    @Then("^")
-    public void c{
-
-    }
-
+public class SeeHoursCharged_Test {
 }
