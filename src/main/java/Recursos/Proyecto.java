@@ -75,6 +75,10 @@ public class Proyecto {
 
     }
 
+    public void addTarea(Tarea tarea) {
+        Tareas.add(tarea);
+    }
+
     public ArrayList<TareaPersona> getRecursosAsociados(){
         return RecursosAsociados;
     }
@@ -89,4 +93,5 @@ public class Proyecto {
             throw new ResourceNotExistentException("No existe esa Recurso en el proyecto");
         RecursosAsociados.remove(tareaPersona);
     }
+
 }
