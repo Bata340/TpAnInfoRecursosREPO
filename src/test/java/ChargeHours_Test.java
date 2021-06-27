@@ -1,5 +1,6 @@
 import Exceptions.ResourceNotExistentException;
 import Exceptions.TareaNotExistentException;
+import Exceptions.TaskInvalidException;
 import Recursos.*;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -54,13 +55,14 @@ public class ChargeHours_Test {
                 tarea = new Tarea(1, 1, task, Estado.Activo, "", -1);
                 Proyecto proy = proyectos.get(project);
                 proy.addTarea(tarea);
+                proyecto = proy;
                 tareas.put(task, tarea);
 
         }
 
         @And("Task {word} exists")
         public void taskDevelopmentExists(String task) {
-                tarea1 = new Tarea(1, 1, task, Estado.Activo, "", -1);
+                tarea1 = new Tarea(2, -1, task, Estado.Activo, "", -1);
                 tareas.put(task, tarea1);
 
         }
@@ -69,9 +71,9 @@ public class ChargeHours_Test {
                 Proyecto proj = proyectos.get(project);
                 Tarea tar = tareas.get(task);
                 proj.addResource(persona, tar);
-                proj.addTarea(tar);
                 Assert.assertEquals(proyecto, proj);
                 Assert.assertEquals(tarea, tar);
+                proyecto = proj;
                 horasACargar = hours;
 
         }
@@ -91,9 +93,9 @@ public class ChargeHours_Test {
         public void iCompleteProjectNameTaskNameAndHoursButIDoNotBelongToTheProject(String project, String task, int hours) {
                 Proyecto proj = proyectos.get(project);
                 Tarea tar = tareas.get(task);
-                proj.addTarea(tar);
                 Assert.assertEquals(proyecto, proj);
-                Assert.assertEquals(tarea1, tar);
+                Assert.assertEquals(tarea, tar);
+                proyecto = proj;
                 horasACargar = hours;
         }
 
@@ -107,7 +109,7 @@ public class ChargeHours_Test {
 
         }
 
-        @When("I complete project name, task name, and hours but the task does not belong to the project")
+        @When("I complete project {word}, task {word}, and {int} hours but the task does not belong to the project")
         public void iCompleteProjectNameTaskNameAndHoursButTheTaskDoesNotBelongToTheProject(String project, String task, int hours) throws Throwable  {
                 Proyecto proj = proyectos.get(project);
                 proj.addResource(persona, null);
@@ -115,6 +117,7 @@ public class ChargeHours_Test {
                 Assert.assertEquals(proyecto, proj);
                 Assert.assertNull(proj.getTareas().stream()
                         .filter(t -> t.getId() == tar.getId()).findFirst().orElse(null));
+                proyecto = proj;
                 horasACargar = hours;
         }
 
@@ -122,9 +125,8 @@ public class ChargeHours_Test {
         public void iGetAnErrorMessageTellingMeThatTheTaskDoesNotBelongToTheProject() {
                 TareaPersona tareaPersona = proyecto.getRecursosAsociados().stream()
                         .filter(t -> t.getIdPersona() == persona.getId()).findFirst().orElse(null);
-                Assert.assertNull(tareaPersona);
                 horas = new CargaDeHoras();
-                Assert.assertThrows(TareaNotExistentException.class,() -> {horas.Cargar(proyecto, tarea1, horasACargar, persona);});
+                Assert.assertThrows(TaskInvalidException.class,() -> {horas.Cargar(proyecto, tarea1, horasACargar, persona);});
         }
 
         @When("I complete project name, task name, and hours but the task does not belong to me")

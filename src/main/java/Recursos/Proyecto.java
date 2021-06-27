@@ -71,7 +71,7 @@ public class Proyecto {
         Tarea ret = Tareas.stream().filter(t -> t.getId() == tarea.getId()).findFirst().orElse(null);
         if (ret == null)
             throw new TareaNotExistentException("No se encontro la tarea en el proyecto");
-
+        RecursosAsociados.add(new TareaPersona(1, ret.getId(), recurso.getId(), recurso));
 
     }
 
