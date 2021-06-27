@@ -11,8 +11,13 @@ public class Tarea {
 
     // Getter Methods
 
-    public Tarea(int id, int idProyecto, String codigo, Estado estado, String Descripcion, int idTarea) {
-
+    public Tarea(int id, int idProyecto, String codigo, Estado estado, String descripcion, int idTarea) {
+        this.Id = id;
+        IdProyecto = idProyecto;
+        Codigo = codigo;
+        Estado = estado;
+        Descripcion = descripcion;
+        IdTarea = idTarea;
     }
 
 

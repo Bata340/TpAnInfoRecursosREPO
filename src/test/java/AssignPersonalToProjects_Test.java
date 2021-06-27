@@ -1,8 +1,6 @@
 import Exceptions.ResourceNotExistentException;
-import Recursos.Estado;
-import Recursos.Persona;
-import Recursos.Proyecto;
-import Recursos.Rol;
+import Exceptions.TareaNotExistentException;
+import Recursos.*;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -12,6 +10,7 @@ import org.junit.Assert;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
@@ -27,7 +26,6 @@ public class AssignPersonalToProjects_Test {
 
     private Persona persona;
     private Proyecto proyecto;
-
     @Given("^I am a project leader$")
     public void i_am_a_project_leader(){
         persona = new Persona(Rol.Admin, 1, 123, "Leonardo Felici");
@@ -39,21 +37,21 @@ public class AssignPersonalToProjects_Test {
     }
 
     @Then("^I can assign personal already existent into the project")
-    public void i_can_assign_personal_already_existent_into_the_project() throws ResourceNotExistentException{
-        proyecto.addResource(persona);
-        ArrayList<Persona> personas = proyecto.getRecursosAsociados();
-        Assert.assertEquals(personas.get(0), persona);
+    public void i_can_assign_personal_already_existent_into_the_project() throws ResourceNotExistentException, TareaNotExistentException {
+        proyecto.addResource(persona, null);
+        ArrayList<TareaPersona> personas = proyecto.getRecursosAsociados();
+        Assert.assertEquals(personas.get(0).getIdPersona(), persona.getId());
         proyecto.removeResource(persona);
     }
 
     @When ("^there is a person assigned to a project$")
-    public void there_is_a_person_assigned_to_a_project() throws ResourceNotExistentException{
+    public void there_is_a_person_assigned_to_a_project() throws ResourceNotExistentException, TareaNotExistentException {
         proyecto = new Proyecto(1, "PSA", Estado.Activo,"Desarrollo CRM PSA");
-        proyecto.addResource(persona);
+        proyecto.addResource(persona, null);
     }
 
     @Then ("^I can remove that person from the project")
-    public void i_can_remove_that_person_from_the_project(){
+    public void i_can_remove_that_person_from_the_project() throws ResourceNotExistentException {
         proyecto.removeResource(persona);
         Assert.assertTrue(proyecto.getRecursosAsociados().isEmpty());
     }
@@ -66,7 +64,8 @@ public class AssignPersonalToProjects_Test {
 
     @Then ("^I get an error message telling me that that person does not exist")
     public void i_get_an_error_message_telling_me_that_that_person_does_not_exist() throws ResourceNotExistentException {
-        Assert.assertThrows(ResourceNotExistentException.class, () -> {proyecto.addResource(persona);});
+        Assert.assertThrows(ResourceNotExistentException.class, () -> {proyecto.addResource(persona, null);});
     }
+
 
 }

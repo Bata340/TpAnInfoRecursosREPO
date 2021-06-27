@@ -17,4 +17,15 @@ import org.junit.runner.RunWith;
 )
 
 public class SeeHoursCharged_Test {
+        @Given("I am a finance staff")
+        public void iAmAFinanceStaff() {
+        }
+
+        @When("I want to bill a project")
+        public void iWantToBillAProject() {
+        }
+
+        @Then("I can visualize the hours of the workers who worked in the project")
+        public void iCanVisualizeTheHoursOfTheWorkersWhoWorkedInTheProject() {
+        }
 }

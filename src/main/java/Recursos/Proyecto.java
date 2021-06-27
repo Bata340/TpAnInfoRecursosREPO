@@ -1,21 +1,26 @@
 package Recursos;
 
 import Exceptions.ResourceNotExistentException;
+import Exceptions.TareaNotExistentException;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class Proyecto {
     private int Id;
     private String Codigo;
     private Estado Estado;
     private String Descripcion;
-    private ArrayList<Persona> recursosAsociados;
+    private ArrayList<TareaPersona> RecursosAsociados;
+    private ArrayList<Tarea> Tareas;
+    //private ArrayList<Persona> recursosAsociados;
 
 
     // Getter Methods
 
     public Proyecto(int id, String codigo, Estado estado, String descripcion){
-        recursosAsociados = new ArrayList<>();
+        RecursosAsociados = new ArrayList<>();
+        Tareas = new ArrayList<>();
         this.Id = id;
         this.Codigo = codigo;
         this.Estado = estado;
@@ -56,18 +61,32 @@ public class Proyecto {
         this.Descripcion = Descripcion;
     }
 
-    public void addResource(Persona recurso) throws ResourceNotExistentException{
-        if(recurso == null){
+    public void addResource(Persona recurso, Tarea tarea) throws ResourceNotExistentException, TareaNotExistentException {
+        if(recurso == null)
             throw new ResourceNotExistentException("Recurso no encontrado");
+        if (tarea == null) {
+            RecursosAsociados.add(new TareaPersona(1, -1, recurso.getId(), recurso));
+            return;
         }
-        recursosAsociados.add(recurso);
+        Tarea ret = Tareas.stream().filter(t -> t.getId() == tarea.getId()).findFirst().orElse(null);
+        if (ret == null)
+            throw new TareaNotExistentException("No se encontro la tarea en el proyecto");
+
+
     }
 
-    public ArrayList<Persona> getRecursosAsociados(){
-        return recursosAsociados;
+    public ArrayList<TareaPersona> getRecursosAsociados(){
+        return RecursosAsociados;
+    }
+    public ArrayList<Tarea> getTareas(){
+        return Tareas;
     }
 
-    public void removeResource(Persona recurso){
-        recursosAsociados.remove(recurso);
+
+    public void removeResource(Persona recurso) throws ResourceNotExistentException {
+        TareaPersona tareaPersona = RecursosAsociados.stream().filter(p -> p.getIdPersona() == recurso.getId()).findFirst().orElse(null);
+        if (tareaPersona == null)
+            throw new ResourceNotExistentException("No existe esa Recurso en el proyecto");
+        RecursosAsociados.remove(tareaPersona);
     }
 }

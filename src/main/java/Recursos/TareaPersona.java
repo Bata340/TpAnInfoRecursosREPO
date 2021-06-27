@@ -4,13 +4,15 @@ public class TareaPersona {
     private int Id;
     private int IdTarea;
     private int IdPersona;
+    private Persona Persona;
 
 
 
-    public TareaPersona(int id, int idTarea, int idPersona) {
+    public TareaPersona(int id, int idTarea, int idPersona, Persona persona) {
         this.IdPersona = idPersona;
         this.Id = id;
         this.IdTarea = idTarea;
+        this.Persona = persona;
     }
 
     // Getter Methods
@@ -27,6 +29,8 @@ public class TareaPersona {
         return IdPersona;
     }
 
+    public Persona getPersona() { return Persona; }
+
     // Setter Methods
 
     public void setId(int Id) {
@@ -40,4 +44,6 @@ public class TareaPersona {
     public void setIdPersona(int IdPersona) {
         this.IdPersona = IdPersona;
     }
+
+    public void setPersona(Persona persona) { Persona = persona; }
 }
