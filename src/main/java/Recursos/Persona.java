@@ -1,3 +1,5 @@
+package Recursos;
+
 public class Persona {
     private int Id;
     private String Nombre;

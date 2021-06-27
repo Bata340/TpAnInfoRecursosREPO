@@ -1,3 +1,5 @@
+package Recursos;
+
 public class TareaPersona {
     private int Id;
     private int IdTarea;

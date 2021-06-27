@@ -1,3 +1,7 @@
+package Recursos;
+
+import Exceptions.ResourceNotExistentException;
+
 import java.util.ArrayList;
 
 public class Proyecto {
@@ -11,7 +15,7 @@ public class Proyecto {
     // Getter Methods
 
     public Proyecto(int id, String codigo, Estado estado, String descripcion){
-        recursosAsociados = new ArrayList<Persona>();
+        recursosAsociados = new ArrayList<>();
         this.Id = id;
         this.Codigo = codigo;
         this.Estado = estado;
@@ -52,7 +56,10 @@ public class Proyecto {
         this.Descripcion = Descripcion;
     }
 
-    public void addResource(Persona recurso){
+    public void addResource(Persona recurso) throws ResourceNotExistentException{
+        if(recurso == null){
+            throw new ResourceNotExistentException("Recurso no encontrado");
+        }
         recursosAsociados.add(recurso);
     }
 
