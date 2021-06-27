@@ -1,6 +1,4 @@
-import Exceptions.ResourceNotExistentException;
-import Exceptions.TareaNotExistentException;
-import Exceptions.TaskInvalidException;
+import Exceptions.*;
 import Recursos.*;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -29,9 +27,11 @@ import java.util.Map;
 public class ChargeHours_Test {
 
         private Persona persona;
+        private Persona otra = new Persona(Rol.User, 2, 2, "Esteban Peña");
         private Proyecto proyecto;
         private Tarea tarea1;
         private Tarea tarea;
+        private Tarea tar_aux;
         private int horasACargar;
         private CargaDeHoras horas;
 
@@ -58,6 +58,16 @@ public class ChargeHours_Test {
                 proyecto = proy;
                 tareas.put(task, tarea);
 
+        }
+
+        @And("Task {word} exists in project {word} and belongs to me")
+        public void taskDevelopmentExistsAndBelongsToMe(String task, String project) throws Throwable {
+                tarea = new Tarea(2, 1, task, Estado.Activo, "", -1);
+                Proyecto proy = proyectos.get(project);
+                proy.addTarea(tarea);
+                proyecto = proy;
+                tareas.put(task, tarea);
+                proy.addResource(persona, tarea);
         }
 
         @And("Task {word} exists")
@@ -106,7 +116,6 @@ public class ChargeHours_Test {
                 Assert.assertNull(tareaPersona);
                 horas = new CargaDeHoras();
                 Assert.assertThrows(ResourceNotExistentException.class,() -> {horas.Cargar(proyecto, tarea, horasACargar, persona);});
-
         }
 
         @When("I complete project {word}, task {word}, and {int} hours but the task does not belong to the project")
@@ -129,20 +138,38 @@ public class ChargeHours_Test {
                 Assert.assertThrows(TaskInvalidException.class,() -> {horas.Cargar(proyecto, tarea1, horasACargar, persona);});
         }
 
-        @When("I complete project name, task name, and hours but the task does not belong to me")
-        public void iCompleteProjectNameTaskNameAndHoursButTheTaskDoesNotBelongToMe() {
+        @When("I complete project {word}, task {word}, and {int} hours but the task does not belong to me")
+        public void iCompleteProjectNameTaskNameAndHoursButTheTaskDoesNotBelongToMe(String project, String task, int hours) throws Throwable {
+                Proyecto proj = proyectos.get(project);
+                tar_aux = tareas.get(task);
+                proj.addResource(otra, tar_aux);
+                proyecto = proj;
+                horasACargar = hours;
         }
 
         @Then("I get an error message telling me that the task does not belong to me")
         public void iGetAnErrorMessageTellingMeThatTheTaskDoesNotBelongToMe() {
+                //TareaPersona tareaPersona = proyecto.getRecursosAsociados().stream()
+                //        .filter(t -> t.getIdTarea() == tar_aux.getId()).findFirst().orElse(null);
+                horas = new CargaDeHoras();
+
+                Assert.assertThrows(TaskNotFromResource.class,() -> {horas.Cargar(proyecto, tar_aux, horasACargar, persona);});
         }
 
-        @When("I complete project name, task name, and hours but the hours are not greater than zero")
-        public void iCompleteProjectNameTaskNameAndHoursButTheHoursAreNotGreaterThanZero() {
+        @When("I complete project {word}, task {word}, and {int} hours but the hours are not greater than zero")
+        public void iCompleteProjectTaskAndHoursButTheHoursAreNotGreaterThanZero(String project, String task, int hours) throws Throwable {
+                Proyecto proj = proyectos.get(project);
+                Tarea tar = tareas.get(task);
+                proj.addResource(persona, tar);
+                Assert.assertEquals(proyecto, proj);
+                proyecto = proj;
+                horasACargar = hours;
         }
 
         @Then("I get an error message telling me that the amount of hours is not valid")
-        public void iGetAnErrorMessageTellingMeThatTheAmountOfHoursIsNotValid() {
+        public void iGetAnErrorMessageTellingMeThatTheAmountOfHoursIsNotValid() throws Throwable {
+                horas = new CargaDeHoras();
+                Assert.assertFalse(horas.Cargar(proyecto, tarea, horasACargar, persona));
         }
 
 

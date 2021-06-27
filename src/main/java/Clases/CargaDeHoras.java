@@ -2,6 +2,7 @@ package Clases;
 
 import Exceptions.ResourceNotExistentException;
 import Exceptions.TaskInvalidException;
+import Exceptions.TaskNotFromResource;
 import Recursos.Persona;
 import Recursos.Proyecto;
 import Recursos.Tarea;
@@ -21,6 +22,12 @@ public class CargaDeHoras {
                 .filter(t -> t.getIdPersona() == persona.getId()).findFirst().orElse(null);
         if (tareaPersona == null) {
             throw new ResourceNotExistentException("Persona no valida en el proyecto");
+        }
+
+        TareaPersona tar = project.getRecursosAsociados().stream()
+                .filter(t -> t.getIdTarea() == tarea.getId()).findFirst().orElse(null);
+        if (tar.getIdPersona() != persona.getId()){
+            throw new TaskNotFromResource("Tarea no es del recurso");
         }
         return hours >= 0;
     }
