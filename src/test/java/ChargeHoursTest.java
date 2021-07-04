@@ -10,6 +10,9 @@ import org.junit.runner.RunWith;
 
 import Clases.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @RunWith(Cucumber.class)
 @CucumberOptions(
         features = "src/test/resources/ChargeHours.feature",
@@ -26,6 +29,7 @@ public class ChargeHoursTest {
     private boolean doesNotBelongToProject;
     private boolean taskDoesNotBelong;
     private boolean hoursInvalid;
+    private boolean dateInvalid;
 
     @Given("developer named {word} working on {word} task {word}")
     public void developerNamedWorkingOnTask(String name, String project, String task) {
@@ -34,10 +38,11 @@ public class ChargeHoursTest {
         persona.assignTask(project, task);
     }
 
-    @When("he charges {int} hours into {word} task {word}")
-    public void heChargesHoursIntoStopifyTaskDevelopment(int hours, String project, String task) throws Throwable {
+    @When("he charges {int} hours into {word} task {word} on {word}")
+    public void heChargesHoursIntoStopifyTaskDevelopment(int hours, String project, String task, String date) throws Throwable {
         try {
-            carga = new CargaDeHoras(project, task, this.persona, hours);
+            SimpleDateFormat sdformat = new SimpleDateFormat("dd/MM/yyyy");
+            carga = new CargaDeHoras(project, task, this.persona, hours, sdformat.parse(date));
         }
         catch (DoesNotBelongToProject e) {
             carga = null;
@@ -50,6 +55,10 @@ public class ChargeHoursTest {
         catch (HoursNotValid e) {
             carga = null;
             hoursInvalid = true;
+        }
+        catch (DateNotValid e){
+            carga = null;
+            dateInvalid = true;
         }
     }
 
@@ -74,5 +83,22 @@ public class ChargeHoursTest {
     public void heGetsAMessageSayingThatTheAmountOfHoursIsInvalid() {
         Assert.assertTrue(hoursInvalid);
         Assert.assertNull(carga);
+    }
+
+    @Then("he gets a message saying that the date is not valid")
+    public void heGetsAMessageSayingThatTheDateIsNotValid(){
+        Assert.assertTrue(dateInvalid);
+        Assert.assertNull(carga);
+    }
+
+    @Then ("he can see his charge date is correct and it is {word}")
+    public void heCanSeeHisChargeDateIsCorrect(String date){
+        SimpleDateFormat sdformat = new SimpleDateFormat("dd/MM/yyyy");
+        Date fecha = null;
+        try {
+            fecha = sdformat.parse(date);
+        }catch(java.text.ParseException ignored){}
+        Assert.assertNotNull(carga);
+        Assert.assertEquals(carga.getDate(), fecha);
     }
 }

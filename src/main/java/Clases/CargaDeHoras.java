@@ -1,6 +1,7 @@
 package Clases;
 
 import Exceptions.*;
+import java.util.Date;
 
 //import javax.persistence.Entity;
 //import javax.persistence.GeneratedValue;
@@ -15,20 +16,25 @@ public class CargaDeHoras {
     private String tarea;
     private String proyecto;
     private Persona persona;
+    private Date fecha;
     private int horas;
 
     public CargaDeHoras(){
     }
 
-    public CargaDeHoras(String project, String task, Persona person, int hours) throws Throwable{
+    public CargaDeHoras(String project, String task, Persona person, int hours, Date date) throws Throwable{
         if (! person.belongsToProject(project) ) { throw new DoesNotBelongToProject("El Recurso no pertenece al Proyecto"); }
         if (! person.taskBelongsToHim(project, task) ) { throw new TaskNotFromResource("La tarea no pertenece al Proyecto"); }
         if (hours <= 0) { throw new HoursNotValid("La cantidad de horas ingresada no es valida"); }
+        if (date.compareTo(new java.util.Date(System.currentTimeMillis())) > 0){
+            throw new DateNotValid("La fecha ingresada es mayor que el día de hoy");
+        }
 
         this.tarea = task;
         this.proyecto = project;
         this.persona = person;
         this.horas = hours;
+        this.fecha = date;
     }
 
     public void modifyProject(String project) throws Throwable {
@@ -54,5 +60,9 @@ public class CargaDeHoras {
 
     public Long getId(){
         return idCarga;
+    }
+
+    public Date getDate(){
+        return fecha;
     }
 }
