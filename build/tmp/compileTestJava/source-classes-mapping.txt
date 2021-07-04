@@ -1,6 +1,2 @@
-SeeHoursCharged_Test.java
- SeeHoursCharged_Test
-AssignPersonalToProjects_Test.java
- AssignPersonalToProjects_Test
-ChargeHours_Test.java
- ChargeHours_Test
+ChargeHoursTest.java
+ ChargeHoursTest
