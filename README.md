@@ -1,2 +1,3 @@
-# memo1-bank-app
-Memo1 - Backend API
+#API Recursos
+
+Implementación de la api de recursos de la tribu impar
