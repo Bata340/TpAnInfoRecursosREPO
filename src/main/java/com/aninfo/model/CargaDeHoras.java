@@ -57,4 +57,15 @@ public class CargaDeHoras {
     public Long getLegajoPersona(){ return legajoPersona; }
 
     public void setLegajoPersona(Long legajo){ this.legajoPersona = legajo; }
+
+    @ManyToOne
+    private com.aninfo.model.Recurso Recurso;
+
+    public com.aninfo.model.Recurso getRecurso() {
+        return Recurso;
+    }
+
+    public void setRecurso(com.aninfo.model.Recurso recurso) {
+        Recurso = recurso;
+    }
 }

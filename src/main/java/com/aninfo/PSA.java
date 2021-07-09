@@ -1,7 +1,9 @@
 package com.aninfo;
 
 import com.aninfo.model.CargaDeHoras;
+import com.aninfo.model.Recurso;
 import com.aninfo.service.CargaDeHorasService;
+import com.aninfo.service.RecursoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -28,7 +30,6 @@ public class PSA {
 	private CargaDeHorasService cargaDeHorasService;
 
 	@Autowired
-
 	public static void main(String[] args) {
 		SpringApplication.run(PSA.class, args);
 	}
@@ -66,6 +67,21 @@ public class PSA {
 		carga.setIdCarga(id);
 		cargaDeHorasService.save(carga);
 		return ResponseEntity.noContent().build();
+	}
+
+
+	@Autowired
+	private RecursoService recursoService;
+
+	@GetMapping("/recurso")
+	public Collection<Recurso> getRecursos() {
+		return recursoService.getRecurso();
+	}
+
+	@GetMapping("/recurso/{legajo}")
+	public ResponseEntity<Recurso> getRecurso( @PathVariable long legajo) {
+		Optional<Recurso> recurso =  recursoService.getRecursoByLegajo(legajo);
+		return ResponseEntity.of(recurso);
 	}
 
 	@Bean
