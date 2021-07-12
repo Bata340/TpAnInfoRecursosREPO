@@ -74,12 +74,12 @@ public class PSA {
 	@Autowired
 	private RecursoService recursoService;
 
-	@GetMapping("/recurso")
+	@GetMapping("/recursos")
 	public Collection<Recurso> getRecursos() throws Throwable {
 		return recursoService.getRecursos();
 	}
 
-	@GetMapping("/recurso/{legajo}")
+	@GetMapping("/recursos/{legajo}")
 	public ResponseEntity<Recurso> getRecurso( @PathVariable long legajo) throws Throwable {
 		Optional<Recurso> recurso =  Optional.of(recursoService.getRecursoByLegajo(legajo));
 		return ResponseEntity.of(recurso);
