@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.Optional;
 import springfox.documentation.builders.PathSelectors;
@@ -34,29 +35,29 @@ public class PSA {
 		SpringApplication.run(PSA.class, args);
 	}
 
-	@PostMapping("/carga")
+	@PostMapping("/cargas")
 	@ResponseStatus(HttpStatus.CREATED)
 	public CargaDeHoras cargar(@RequestBody CargaDeHoras carga) {
 		return cargaDeHorasService.createCargaDeHoras(carga);
 	}
 
-	@GetMapping("/carga")
+	@GetMapping("/cargas")
 	public Collection<CargaDeHoras> getCargas() {
 		return cargaDeHorasService.getCargasDeHoras();
 	}
 
-	@GetMapping("/carga/{id}")
+	@GetMapping("/cargas/{id}")
 	public ResponseEntity<CargaDeHoras> getCarga(@PathVariable Long id) {
 		Optional<CargaDeHoras> cargaDeHorasOptional = cargaDeHorasService.findById(id);
 		return ResponseEntity.of(cargaDeHorasOptional);
 	}
 
-	@DeleteMapping("/carga/{id}")
+	@DeleteMapping("/cargas/{id}")
 	public void deleteCarga(@PathVariable Long id) {
 		cargaDeHorasService.deleteById(id);
 	}
 
-	@PutMapping("/carga/{id}")
+	@PutMapping("/cargas/{id}")
 	public ResponseEntity<CargaDeHoras> updateCarga(@RequestBody CargaDeHoras carga, @PathVariable Long id) {
 		Optional<CargaDeHoras> cargaDeHorasOptional = cargaDeHorasService.findById(id);
 
@@ -74,13 +75,13 @@ public class PSA {
 	private RecursoService recursoService;
 
 	@GetMapping("/recurso")
-	public Collection<Recurso> getRecursos() {
-		return recursoService.getRecurso();
+	public Collection<Recurso> getRecursos() throws Throwable {
+		return recursoService.getRecursos();
 	}
 
 	@GetMapping("/recurso/{legajo}")
-	public ResponseEntity<Recurso> getRecurso( @PathVariable long legajo) {
-		Optional<Recurso> recurso =  recursoService.getRecursoByLegajo(legajo);
+	public ResponseEntity<Recurso> getRecurso( @PathVariable long legajo) throws Throwable {
+		Optional<Recurso> recurso =  Optional.of(recursoService.getRecursoByLegajo(legajo));
 		return ResponseEntity.of(recurso);
 	}
 
