@@ -1,5 +1,7 @@
 package com.aninfo.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -7,6 +9,7 @@ import javax.persistence.Id;
 public class Recurso {
 
     @Id
+    @SerializedName("legajo")
     private Long Legajo;
     private String Nombre;
     private String Apellido;

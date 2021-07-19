@@ -4,13 +4,11 @@ import com.aninfo.exceptions.HoursNotValid;
 import com.aninfo.model.CargaDeHoras;
 import com.aninfo.repository.CargaDeHorasRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class CargaDeHorasService {
@@ -48,4 +46,12 @@ public class CargaDeHorasService {
     }
 
     public Collection<CargaDeHoras> findByLegajo(Long legajo) { return cargaDeHorasRepository.findByLegajoPersona(legajo); }
+
+    public Collection<CargaDeHoras> findByFechaBetween(Date desde, Date hasta) {
+//        Calendar from = Calendar.getInstance();
+//        from.set(Integer.parseInt(desde.substring(0,4)), Integer.parseInt(desde.substring(5,2))-1, Integer.parseInt(desde.substring(8,2)));
+//        Calendar to = Calendar.getInstance();
+//        to.set(Integer.parseInt(hasta.substring(0,4)), Integer.parseInt(hasta.substring(5,2))-1, Integer.parseInt(hasta.substring(8,2)));
+        return cargaDeHorasRepository.findByFechaBetween(desde, hasta);
+    }
 }

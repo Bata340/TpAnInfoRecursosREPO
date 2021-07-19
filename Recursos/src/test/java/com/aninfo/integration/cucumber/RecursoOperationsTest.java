@@ -30,7 +30,7 @@ public class RecursoOperationsTest extends RecursoIntegrationServiceTest {
     @When("^i ask for resource with id (\\d+)$")
     public void i_ask_for_resource_with_id(int legajo){
         try{
-            rec = recursoService.getRecursoByLegajo(legajo);
+            rec = recursoService.getRecursoByLegajoOrNombreOrApellido(legajo, null, null);
         } catch (Throwable throwable) {
             err = (LegajoNotFound) throwable;
         }
@@ -51,7 +51,7 @@ public class RecursoOperationsTest extends RecursoIntegrationServiceTest {
     @When("^i ask for it$")
     public void i_ask_for_it(){
         try{
-            rec = recursoService.getRecursoByLegajo(legajo);
+            rec = recursoService.getRecursoByLegajoOrNombreOrApellido(legajo, null, null);
         } catch (Throwable throwable) {
             err = (LegajoNotFound) throwable;
         }

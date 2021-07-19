@@ -12,6 +12,7 @@ public class CargaDeHoras {
     private Double horas;
     private Long tarea;
     private Long proyecto;
+    @Temporal(TemporalType.DATE)
     private Date fecha;
     private Long legajoPersona;
 

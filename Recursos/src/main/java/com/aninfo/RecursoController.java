@@ -37,9 +37,9 @@ public class RecursoController {
 		return recursoService.getRecursos();
 	}
 
-	@GetMapping("/recursos/{legajo}")
-	public ResponseEntity<Recurso> getRecurso( @PathVariable long legajo) throws Throwable {
-		Optional<Recurso> recurso =  Optional.of(recursoService.getRecursoByLegajo(legajo));
+	@GetMapping("/recursos/{legajo}/{nombre}/{apellido}")
+	public ResponseEntity<Recurso> getRecurso( @PathVariable(required = false) long legajo, @PathVariable(required = false) String nombre, @PathVariable(required = false) String apellido) throws Throwable {
+		Optional<Recurso> recurso =  Optional.of(recursoService.getRecursoByLegajoOrNombreOrApellido(legajo, nombre, apellido));
 		return ResponseEntity.of(recurso);
 	}
 

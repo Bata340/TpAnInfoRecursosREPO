@@ -6,11 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.Optional;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -32,32 +34,38 @@ public class CargaDeHorasController {
 		SpringApplication.run(CargaDeHorasController.class, args);
 	}
 
-	@PostMapping("/cargas")
+	@PostMapping("/horas")
 	@ResponseStatus(HttpStatus.CREATED)
 	public CargaDeHoras cargar(@RequestBody CargaDeHoras carga) {
 		return cargaDeHorasService.createCargaDeHoras(carga);
 	}
 
-	@GetMapping("/cargas")
+	@Deprecated
+	@GetMapping("/horas")
 	public Collection<CargaDeHoras> getCargas() {
 		return cargaDeHorasService.getCargasDeHoras();
 	}
 
-	@GetMapping("/cargas/legajo/{legajo}")
+	@GetMapping("/horas/legajo/{legajo}")
 	public Collection<CargaDeHoras> getCargas(@PathVariable Long legajo) {
 		return cargaDeHorasService.findByLegajo(legajo);
 	}
 
-	@GetMapping("/cargas/{id}")
+	@GetMapping("/horas/fecha/{desde}/{hasta}")
+	public Collection<CargaDeHoras> getCargasFilteredByDate(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date desde, @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date hasta) {
+		return cargaDeHorasService.findByFechaBetween(desde, hasta);
+	}
+
+	@GetMapping("/horas/{id}")
 	public ResponseEntity<CargaDeHoras> getCarga(@PathVariable Long id) {
 		Optional<CargaDeHoras> cargaDeHorasOptional = cargaDeHorasService.findById(id);
 		return ResponseEntity.of(cargaDeHorasOptional);
 	}
 
-	@DeleteMapping("/cargas/{id}")
+	@DeleteMapping("/horas/{id}")
 	public void deleteCarga(@PathVariable Long id) { cargaDeHorasService.deleteById(id); }
 
-	@PutMapping("/cargas/{id}")
+	@PutMapping("/horas/{id}")
 	public ResponseEntity<CargaDeHoras> updateCarga(@RequestBody CargaDeHoras carga, @PathVariable Long id) {
 		Optional<CargaDeHoras> cargaDeHorasOptional = cargaDeHorasService.findById(id);
 
