@@ -38,7 +38,7 @@ public class CargaDeHorasOperationsTest extends CargaDeHorasIntegrationServiceTe
     @When("^he charges (\\d+) hours into proyect (\\d+) task (\\d+) on (.*)$")
     public void he_charges_hours_into_proyect_task_on(int hours, int proy, int task, String date) throws Throwable {
         try {
-            SimpleDateFormat sdformat = new SimpleDateFormat("dd/MM/yyy");
+            SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
             carga = createCarga(Double.valueOf(hours), this.tarea, this.proyecto, sdformat.parse(date), this.legajo);
         } catch (HoursNotValid hnv) {
             this.hnv = hnv;

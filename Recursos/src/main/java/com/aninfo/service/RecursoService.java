@@ -36,7 +36,7 @@ public class RecursoService {
     }
 
 
-    public Recurso getRecursoByLegajoOrNombreOrApellido(long legajo, String nombre, String apellido) throws Throwable {
+    public Recurso getRecursoByLegajo(long legajo) throws Throwable {
         Collection<Recurso> recursos = getRecursos();
 
         Recurso ret =recursos.stream().filter(t -> t.getLegajo() == legajo).findFirst().orElse(null);

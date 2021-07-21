@@ -14,5 +14,7 @@ public interface CargaDeHorasRepository extends JpaRepository<CargaDeHoras, Long
 
     List<CargaDeHoras> findByLegajoPersona(Long legajo);
 
-    List<CargaDeHoras> findByFechaBetween(Date desde, Date hasta);
+    List<CargaDeHoras> findByFechaBetweenAndLegajoPersona(Date desde, Date hasta, long legajo);
+
+    CargaDeHoras findByFechaAndTarea(Date fecha, long tarea);
 }

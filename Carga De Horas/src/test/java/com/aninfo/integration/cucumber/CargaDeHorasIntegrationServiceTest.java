@@ -16,7 +16,7 @@ public class CargaDeHorasIntegrationServiceTest {
     @Autowired
     CargaDeHorasService cargaDeHorasService;
 
-    CargaDeHoras createCarga(Double hours, Long task, Long project, Date date, Long legajo) {
+    CargaDeHoras createCarga(Double hours, Long task, Long project, Date date, Long legajo) throws Throwable {
         return cargaDeHorasService.createCargaDeHoras(new CargaDeHoras(hours, task, project, date, legajo));
     }
 

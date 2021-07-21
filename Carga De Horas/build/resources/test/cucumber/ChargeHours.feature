@@ -5,10 +5,10 @@ Feature: Charge hours into a task
 
   Scenario: Hours invalid
     Given developer 1 working on project 1 task 1
-    When he charges 0 hours into proyect 1 task 1 on 22/01/2020
+    When he charges 0 hours into proyect 1 task 1 on 2021-01-22
     Then he gets a message saying that the amount of hours is invalid
 
   Scenario: Charge Successfull
     Given developer 1 working on project 1 task 1
-    When he charges 5 hours into proyect 1 task 1 on 22/01/2020
+    When he charges 5 hours into proyect 1 task 1 on 2021-01-22
     Then he gets a message saying that the charge is successful

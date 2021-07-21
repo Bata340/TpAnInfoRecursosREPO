@@ -17,6 +17,6 @@ public class RecursoIntegrationServiceTest {
     RecursoService recursoService;
 
     Collection<Recurso> getRecursos() throws Throwable {return recursoService.getRecursos(); }
-    Recurso getRecursoByLegajo(Long legajo, String nombre, String apellido) throws Throwable { return recursoService.getRecursoByLegajoOrNombreOrApellido(legajo, nombre, apellido); }
+    Recurso getRecursoByLegajo(Long legajo) throws Throwable { return recursoService.getRecursoByLegajo(legajo); }
 
 }

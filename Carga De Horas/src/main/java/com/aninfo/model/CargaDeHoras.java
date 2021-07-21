@@ -1,6 +1,8 @@
 package com.aninfo.model;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 @Entity
@@ -19,9 +21,10 @@ public class CargaDeHoras {
     public CargaDeHoras(){
     }
 
-    public CargaDeHoras(Double hours, Long task, Long project, Date date, Long legajo) {
+    public CargaDeHoras(Double hours, Long task, Long project, Date date, Long legajo) throws Throwable {
         this.horas = hours;
-        this.fecha = date;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        this.fecha = sdf.parse(sdf.format(date));
         this.tarea = task;
         this.proyecto = project;
         this.legajoPersona = legajo;

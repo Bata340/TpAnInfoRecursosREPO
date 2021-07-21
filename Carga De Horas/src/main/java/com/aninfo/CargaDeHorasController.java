@@ -36,11 +36,11 @@ public class CargaDeHorasController {
 
 	@PostMapping("/horas")
 	@ResponseStatus(HttpStatus.CREATED)
-	public CargaDeHoras cargar(@RequestBody CargaDeHoras carga) {
+	public CargaDeHoras cargar(@RequestBody CargaDeHoras carga) throws Throwable {
 		return cargaDeHorasService.createCargaDeHoras(carga);
 	}
 
-	@Deprecated
+	//@Deprecated
 	@GetMapping("/horas")
 	public Collection<CargaDeHoras> getCargas() {
 		return cargaDeHorasService.getCargasDeHoras();
@@ -51,9 +51,9 @@ public class CargaDeHorasController {
 		return cargaDeHorasService.findByLegajo(legajo);
 	}
 
-	@GetMapping("/horas/fecha/{desde}/{hasta}")
-	public Collection<CargaDeHoras> getCargasFilteredByDate(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date desde, @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date hasta) {
-		return cargaDeHorasService.findByFechaBetween(desde, hasta);
+	@GetMapping("/horas/legajo/{legajo}/fecha/{desde}/{hasta}")
+	public Collection<CargaDeHoras> getCargasFilteredByDate(@PathVariable long legajo, @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date desde, @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date hasta) {
+		return cargaDeHorasService.findByFechaBetween(desde, hasta, legajo);
 	}
 
 	@GetMapping("/horas/{id}")
