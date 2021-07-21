@@ -1,20 +1,15 @@
 package com.aninfo.service;
 
+import com.aninfo.exceptions.DateNotBeforeToday;
 import com.aninfo.exceptions.HoursNotValid;
-import com.aninfo.exceptions.MultipleTaskOnSameDay;
-import com.aninfo.exceptions.TaskDoesNotBelong;
+import com.aninfo.exceptions.HoursSumOver24;
 import com.aninfo.model.CargaDeHoras;
 import com.aninfo.repository.CargaDeHorasRepository;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -29,12 +24,27 @@ public class CargaDeHorasService {
             throw new HoursNotValid("La cantidad de horas no es valida");
         }
 
-        CargaDeHoras onDate = cargaDeHorasRepository.findByFechaAndTarea(carga.getFecha(), carga.getTarea());
-        if (onDate != null){
-            throw new MultipleTaskOnSameDay("Ya se realizó una carga para la tarea en la fecha especificada");
+        Collection<CargaDeHoras> onDate = cargaDeHorasRepository.findByFechaAndTarea(carga.getFecha(), carga.getTarea());
+        Iterator<CargaDeHoras> iterator = onDate.iterator();
+
+        double total = 0;
+
+        while(iterator.hasNext()){
+            CargaDeHoras horas = iterator.next();
+            total += horas.getHoras();
         }
 
-        String projectId = String.valueOf(carga.getProyecto());
+        if (total + carga.getHoras() > 24){
+            throw new HoursSumOver24("La cantidad de horas en el día ingresado para la tarea es mayor a 24");
+        }
+
+        Date today = Calendar.getInstance().getTime();
+                /*.format(Calendar.getInstance().getTime());*/
+
+        if (carga.getFecha().after(today)){
+            throw new DateNotBeforeToday("La fecha especificada es mayor a la actual");
+        }
+        /*String projectId = String.valueOf(carga.getProyecto());
         String taskId = String.valueOf(carga.getTarea());
         String urlString = "https://project-squad5.herokuapp.com/api/projects/"+projectId+"/tasks/"+taskId+"/?format=json";
         URL url = new URL(urlString);
@@ -49,7 +59,7 @@ public class CargaDeHorasService {
         Gson json = new Gson();
         JsonObject ret = json.fromJson(sb.toString(), JsonObject.class);
         if (ret.get("employee_id").getAsLong() != carga.getLegajoPersona())
-            throw new TaskDoesNotBelong("La tarea no pertenece a la persona");
+            throw new DateNotBeforeToday("La tarea no pertenece a la persona");*/
 
         cargaDeHorasRepository.save(carga);
 
