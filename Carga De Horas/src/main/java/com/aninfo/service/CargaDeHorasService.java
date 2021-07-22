@@ -18,8 +18,7 @@ public class CargaDeHorasService {
     @Autowired
     private CargaDeHorasRepository cargaDeHorasRepository;
 
-    @Transactional
-    public CargaDeHoras createCargaDeHoras(CargaDeHoras carga) throws Throwable {
+    public boolean validate(CargaDeHoras carga) throws Throwable {
         if (carga.getHoras() <= 0 || carga.getHoras() > 24) {
             throw new HoursNotValid("La cantidad de horas no es valida");
         }
@@ -39,27 +38,18 @@ public class CargaDeHorasService {
         }
 
         Date today = Calendar.getInstance().getTime();
-                /*.format(Calendar.getInstance().getTime());*/
+        /*.format(Calendar.getInstance().getTime());*/
 
         if (carga.getFecha().after(today)){
             throw new DateNotBeforeToday("La fecha especificada es mayor a la actual");
         }
-        /*String projectId = String.valueOf(carga.getProyecto());
-        String taskId = String.valueOf(carga.getTarea());
-        String urlString = "https://project-squad5.herokuapp.com/api/projects/"+projectId+"/tasks/"+taskId+"/?format=json";
-        URL url = new URL(urlString);
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod("GET");
-        BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        StringBuilder sb = new StringBuilder();
-        String line;
-        while ((line = br.readLine()) != null)
-            sb.append(line+"\n");
-        br.close();
-        Gson json = new Gson();
-        JsonObject ret = json.fromJson(sb.toString(), JsonObject.class);
-        if (ret.get("employee_id").getAsLong() != carga.getLegajoPersona())
-            throw new DateNotBeforeToday("La tarea no pertenece a la persona");*/
+        return true;
+    }
+
+    @Transactional
+    public CargaDeHoras createCargaDeHoras(CargaDeHoras carga) throws Throwable {
+
+        validate(carga);
 
         cargaDeHorasRepository.save(carga);
 

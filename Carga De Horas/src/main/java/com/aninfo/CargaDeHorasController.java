@@ -66,7 +66,7 @@ public class CargaDeHorasController {
 	public void deleteCarga(@PathVariable Long id) { cargaDeHorasService.deleteById(id); }
 
 	@PutMapping("/horas/{id}")
-	public ResponseEntity<CargaDeHoras> updateCarga(@RequestBody CargaDeHoras carga, @PathVariable Long id) {
+	public ResponseEntity<CargaDeHoras> updateCarga(@RequestBody CargaDeHoras carga, @PathVariable Long id) throws Throwable {
 		Optional<CargaDeHoras> cargaDeHorasOptional = cargaDeHorasService.findById(id);
 
 		if (!cargaDeHorasOptional.isPresent()){
@@ -74,6 +74,9 @@ public class CargaDeHorasController {
 		}
 
 		carga.setIdCarga(id);
+
+		cargaDeHorasService.validate(carga);
+
 		cargaDeHorasService.save(carga);
 		return ResponseEntity.of(cargaDeHorasOptional);
 	}
