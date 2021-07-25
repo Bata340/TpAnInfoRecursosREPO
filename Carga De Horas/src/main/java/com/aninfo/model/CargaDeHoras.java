@@ -1,6 +1,13 @@
 package com.aninfo.model;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 import javax.persistence.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -17,17 +24,19 @@ public class CargaDeHoras {
     @Temporal(TemporalType.DATE)
     private Date fecha;
     private Long legajoPersona;
+    private String nombreTarea;
 
     public CargaDeHoras(){
     }
 
-    public CargaDeHoras(Double hours, Long task, Long project, Date date, Long legajo) throws Throwable {
+    public CargaDeHoras(Double hours, Long task, Long project, Date date, Long legajo, String nombre) throws Throwable {
         this.horas = hours;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         this.fecha = sdf.parse(sdf.format(date));
         this.tarea = task;
         this.proyecto = project;
         this.legajoPersona = legajo;
+        this.nombreTarea = nombre;
     }
 
     public Long getIdCarga() {
@@ -61,5 +70,9 @@ public class CargaDeHoras {
     public Long getLegajoPersona(){ return legajoPersona; }
 
     public void setLegajoPersona(Long legajo){ this.legajoPersona = legajo; }
+
+    public String getNombreTarea() { return nombreTarea; }
+
+    public void setNombreTarea(String nombre){ this.nombreTarea = nombre; }
 
 }

@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -23,7 +22,7 @@ public class CargaDeHorasService {
             throw new HoursNotValid("La cantidad de horas no es valida");
         }
 
-        Collection<CargaDeHoras> onDate = cargaDeHorasRepository.findByFechaAndTarea(carga.getFecha(), carga.getTarea());
+        Collection<CargaDeHoras> onDate = cargaDeHorasRepository.findByFecha(carga.getFecha());
         Iterator<CargaDeHoras> iterator = onDate.iterator();
 
         double total = 0;
@@ -34,15 +33,15 @@ public class CargaDeHorasService {
         }
 
         if (total + carga.getHoras() > 24){
-            throw new HoursSumOver24("La cantidad de horas en el día ingresado para la tarea es mayor a 24");
+            throw new HoursSumOver24("La cantidad de horas en el día ingresado es mayor a 24");
         }
 
         Date today = Calendar.getInstance().getTime();
-        /*.format(Calendar.getInstance().getTime());*/
 
         if (carga.getFecha().after(today)){
             throw new DateNotBeforeToday("La fecha especificada es mayor a la actual");
         }
+
         return true;
     }
 
@@ -66,9 +65,7 @@ public class CargaDeHorasService {
         return cargaDeHorasRepository.findById(id);
     }
 
-    public void save(CargaDeHoras carga) {
-        cargaDeHorasRepository.save(carga);
-    }
+    public void save(CargaDeHoras carga) { cargaDeHorasRepository.save(carga); }
 
     public void deleteById(Long id) {
         cargaDeHorasRepository.deleteById(id);
