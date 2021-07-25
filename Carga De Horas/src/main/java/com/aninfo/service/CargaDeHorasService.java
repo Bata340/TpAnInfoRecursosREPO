@@ -22,7 +22,7 @@ public class CargaDeHorasService {
             throw new HoursNotValid("La cantidad de horas no es valida");
         }
 
-        Collection<CargaDeHoras> onDate = cargaDeHorasRepository.findByFecha(carga.getFecha());
+        Collection<CargaDeHoras> onDate = cargaDeHorasRepository.findByFechaAndLegajoPersona(carga.getFecha(), carga.getLegajoPersona());
         Iterator<CargaDeHoras> iterator = onDate.iterator();
 
         double total = 0;
