@@ -1,6 +1,7 @@
 package com.aninfo.service;
 
 import com.aninfo.exceptions.DateNotBeforeToday;
+import com.aninfo.exceptions.FieldsNotFilled;
 import com.aninfo.exceptions.HoursNotValid;
 import com.aninfo.exceptions.HoursSumOver24;
 import com.aninfo.model.CargaDeHoras;
@@ -41,6 +42,9 @@ public class CargaDeHorasService {
         if (carga.getFecha().after(today)){
             throw new DateNotBeforeToday("La fecha especificada es mayor a la actual");
         }
+
+        if (carga.getNombreTarea() == "")
+            throw new FieldsNotFilled("Por favor complete todos los campos");
 
         return true;
     }
